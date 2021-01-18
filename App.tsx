@@ -4,12 +4,11 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Test from './Screens/Test';
-import Test2 from './Screens/Test2';
+import ProductsList from './Screens/ProductsList';
 
 export type RootStackParamList = {
   Home: undefined;
-  Profile: undefined;
+  Details: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -18,16 +17,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-            name="Home"
-            component={Test}
-            options={{ title: 'Welcome' }}
-          />
-        <Stack.Screen
-          name="Profile"
-          component={Test2}
-          options={{title: 'Profile'}}
-        />
+        <Stack.Screen name="Home" component={ProductsList}/>
       </Stack.Navigator>
     </NavigationContainer>
     
