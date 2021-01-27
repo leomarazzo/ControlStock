@@ -2,9 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet} from 'react-native';
+import { Button, StyleSheet} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ProductsList from './Screens/ProductsList';
+import ProductForm from './Screens/ProductForm';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -17,7 +18,18 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={ProductsList}/>
+        <Stack.Screen
+          name="Home"
+          component={ProductsList}
+          options={{ title: 'Productos' }}
+        />
+        <Stack.Screen
+          name="Details"
+          component={ProductForm}
+          options={{
+            title: 'Producto',
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
     
