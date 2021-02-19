@@ -31,20 +31,13 @@ const ProductForm: React.FC<Props> = ({ navigation }) => {
     updateProduct,
   } = useContext(ProductsContext);
 
-  const [id, setId] = useState(0);
-  const [name, setName] = useState("");
-  const [stock, setStock] = useState(0);
-  const [stockMin, setStockMin] = useState(0);
+  const [id, setid] = useState(getNextID());
+  const [name, setname] = useState("");
+  const [stock, setstock] = useState(0);
+  const [stockMin, setstockMin] = useState(0);
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    if (currentProduct !== null) {
-      setId(currentProduct.id);
-      setName(currentProduct.name);
-      setStock(currentProduct.stock);
-      setStockMin(currentProduct.stockMin);
-    } else {
-      setId(getNextID());
-    }
     navigation.setOptions({
       headerRight: () => (
         <Button
@@ -54,34 +47,32 @@ const ProductForm: React.FC<Props> = ({ navigation }) => {
           onPress={() => saveProduct()}
         />
       ),
-    });
+    })
+    if (currentProduct !== null && !loaded) {
+      setid(currentProduct.id);
+      setname(currentProduct.name);
+      setstock(currentProduct.stock);
+      setstockMin(currentProduct.stockMin);
+      setLoaded(true)
+    };
   });
 
   const saveProduct = () => {
     if (currentProduct === null) {
-      newProduct();
+      addProduct({
+        id: id,
+        name: name,
+        stock: stock,
+        stockMin: stockMin,
+      });
     } else {
-      editProduct();
+      updateProduct({
+        id: id,
+        name: name,
+        stock: stock,
+        stockMin: stockMin,
+      });
     }
-  };
-
-  const newProduct = () => {
-    addProduct({
-      id: id,
-      name: name,
-      stock: stock,
-      stockMin: stockMin,
-    });
-    navigation.navigate("Home")
-  };
-
-  const editProduct = () => {
-    updateProduct({
-      id: id,
-      name: name,
-      stock: stock,
-      stockMin: stockMin,
-    });
     navigation.navigate("Home")
   };
 
@@ -97,22 +88,22 @@ const ProductForm: React.FC<Props> = ({ navigation }) => {
       >
         <ScrollView>
           <Input
-            label={<Text style={{ fontSize: 20 }}>Id</Text>}
+            label={<Text style={{ fontSize: 25, color:"#e6792b" }}>Id</Text>}
             disabled={true}
             defaultValue={id.toString()}
             style={styles.item}
           />
           <Input
-            label={<Text style={{ fontSize: 20 }}>Nombre</Text>}
+            label={<Text style={{ fontSize: 25, color:"#e6792b" }}>Nombre</Text>}
             defaultValue={name}
             style={styles.item}
-            onChangeText={(value) => setName(value)}
+            onChangeText={(value) => setname(value)}
           />
           <View style={styles.item}>
-            <NumberInput value={stock} onChange={setStock} minValue={0} />
+            <NumberInput value={stock} onChange={setstock} minValue={0} />
           </View>
           <View style={styles.item}>
-            <NumberInput value={stockMin} onChange={setStockMin} minValue={0} />
+            <NumberInput value={stockMin} onChange={setstockMin} minValue={0} />
           </View>
           {!!currentProduct && (
             <Button
@@ -134,10 +125,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: "center",
     paddingHorizontal: 50,
+    backgroundColor: "#2f3643"
   },
   item: {
     padding: 10,
     marginTop: 20,
+    color: '#e6792b',
+    fontSize:25
   },
   actionButtonIcon: {
     fontSize: 20,
@@ -146,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default observer(ProductForm);
+export default ProductForm;

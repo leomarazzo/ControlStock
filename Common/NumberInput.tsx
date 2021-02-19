@@ -1,8 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Icon, Input } from "react-native-elements";
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { min } from 'react-native-reanimated';
 
 interface IProps {
     value: number;
@@ -12,38 +10,37 @@ interface IProps {
 }
 
 const NumberInput: React.FC<IProps> = ({value, onChange, minValue, maxValue}) => {
+
+    const [number, setnumber] = useState(0)
+
+    useEffect(() => {
+        setnumber(value)
+    }, [])
+
     const subs = () => {
-        value--
-        onChange(value)
         
+        setnumber(number - 1)
+        onChange(number)
     }
 
     const add = () => {
-        value++
-        onChange(value)
+        setnumber(number + 1)
+        onChange(number)
     }
 
     const inp = (val: any) => {
-        try {
-            value = parseInt(val)
-            onChange(value)
-        } catch (error) {
-            value= 0
-        }
+        setnumber(parseInt(val))
     }
 
     const endInp = () => {
-        if (Number.isNaN(value)){
-            value=0
-            onChange(value)
-        }
+        onChange(number) 
     }
 
     return (
         <View style={styles.container}>
-            <Icon reverse raised name="remove" disabled={(value === minValue)} size={30} type="material" onPress={() => subs()} style={styles.icon}/>
-            <Input defaultValue={value.toString()} onChange={(val) => inp(val)} style={styles.input} onEndEditing={() => endInp()}/>
-            <Icon reverse raised name="add" size={30} disabled={(value === maxValue)} type="material" onPress={() => add()} style={styles.icon}/>
+            <Icon reverse raised name="remove" disabled={(value === minValue)} size={30} type="material" onPress={() => subs()} reverseColor='#e6792b'/>
+            <Input defaultValue={value.toString()} onChangeText={(val) => inp(val)} style={styles.input} onBlur={() => endInp()} onEndEditing={() => endInp()}/>
+            <Icon reverse raised name="add" size={30} disabled={(value === maxValue)} type="material" onPress={() => add()} reverseColor='#e6792b'/>
         </View>
     )
 }
@@ -55,11 +52,9 @@ const styles = StyleSheet.create({
         marginLeft: '10%'
         
     },
-    icon: {
-        flex: 10,
-    },
     input: {
         flex: 1,
+        color: '#e6792b'
     }
 })
 

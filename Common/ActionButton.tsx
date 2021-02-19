@@ -13,7 +13,7 @@ const ActionButton: React.FC<IProps> = ({ onpress }) => {
       onPress={onpress}
       style={styles.TouchableOpacityStyle}
     >
-      <Icon reverse raised name="add" size={30} type="material" color="#f50" backgroundColor="#E74C3C" />
+      <Icon reverse raised name="add" size={30} type="material" color="#e6792b" backgroundColor="#e6792b" />
     </TouchableOpacity>
   );
 };
@@ -33,6 +33,6 @@ const styles = StyleSheet.create({
 
   FloatingButtonStyle: {
     
-    backgroundColor: "#E74C3C",
+    backgroundColor: "#e6792b",
   },
 });
